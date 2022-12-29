@@ -16,7 +16,11 @@ const play = (guidId) => {
 const getNextResource = (guildId) => {
     if (queue[guildId]) {
         queue[guildId].playlist.shift();
-        play(guildId);
+        if (queue[guildId].playlist.length == 0) {
+            delete queue[guildId];
+        } else {
+            play(guildId);
+        }
     }
 };
 

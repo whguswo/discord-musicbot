@@ -2,11 +2,14 @@ const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 const queue = new Map();
+const log = new Map();
 require('dotenv').config();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({
+    intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
+});
 
-module.exports = { queue };
+module.exports = { queue, log };
 
 // Add Commands
 client.commands = new Collection();
@@ -18,6 +21,15 @@ for (const file of commandFiles) {
     const command = require(filePath);
     client.commands.set(command.data.name, command);
 }
+
+client.on('messageCreate', (message) => {
+    if (message.author.bot) return false;
+
+    if (!log[message.channelId]) {
+        log[message.channelId] = [];
+    }
+    log[message.channelId].push({ author: message.author.username, content: message.content });
+});
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;

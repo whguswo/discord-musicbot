@@ -44,6 +44,10 @@ const embed = {
     },
 };
 
+function addComma(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+}
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('play')
@@ -81,7 +85,7 @@ module.exports = {
         duration.minutes = String(duration.minutes).length == 1 ? '0' + duration.minutes : duration.minutes;
         duration.seconds = String(duration.seconds).length == 1 ? '0' + duration.seconds : duration.seconds;
         const videoDuration = duration.hours == 0 ? `${duration.minutes}:${duration.seconds}` : `${duration.hours}:${duration.minutes}:${duration.seconds}`;
-        const viewCount = result.data.items[0].statistics.viewCount;
+        const viewCount = addComma(result.data.items[0].statistics.viewCount);
         const url = `https://www.youtube.com/watch?v=${id}`;
 
         interaction.reply('노래를 대기열에 추가합니다!');
@@ -107,7 +111,7 @@ module.exports = {
 
             const player = createAudioPlayer();
             player.on('error', error => {
-                console.error(`Error: ${error.message} with resource ${error.resource.metadata.title}`);
+                console.error(`Error: ${error.message}`);
                 getNextResource(interaction.guild.id);
             });
             player.on(AudioPlayerStatus.Idle, () => {
