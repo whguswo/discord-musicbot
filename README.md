@@ -4,6 +4,7 @@ discord.js v14로 만든 디스코드 음악봇입니다.
 유튜브 검색 API를 사용하여 검색을 진행합니다.  
 
 discord.js v14로 업그레이드와 `queue` 구현을 완료했습니다.  
+( TODO: Update and refactoring )  
 
 
 
@@ -63,4 +64,12 @@ YOUTUBE_API=(Youtube API Key)
 #### /unpause
 
 > 일시중지를 해제합니다.
+
+## Troubleshooting
+
+### ffmpeg Error
+> npm i ffmpeg-static
+
+### sodium install Error
+> sudo apt-get install -y libtool
 
